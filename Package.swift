@@ -34,7 +34,8 @@ let package = Package(
         ])
     ],
     dependencies: [
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", "600.0.0-latest"..<"602.0.0"),
+        // Allow Swift 6.2 toolchains to resolve swift-syntax 602.x.
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", "600.0.0-latest"..<"603.0.0"),
     ],
     targets: [
         .target(name: "OpenUSD",
