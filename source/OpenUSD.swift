@@ -22,7 +22,11 @@
 // to the underlying C++ libraries
 // use @_documentation(visibility: internal) to hide imported symbols
 // from showing up in DocC (e.g. Boost macros, public constants)
-@_documentation(visibility: internal) @_exported import _OpenUSD_SwiftBindingHelpers
+// Do not re-export the underlying Clang module from the Swift interface.
+// Re-exporting makes module interface verification require the Clang module to
+// be loadable in downstream build contexts (e.g. archive verification), which
+// is brittle for binary distribution.
+@_documentation(visibility: internal) @_implementationOnly import _OpenUSD_SwiftBindingHelpers
 
 
 // Makes it easier for clients to access Usd types without
