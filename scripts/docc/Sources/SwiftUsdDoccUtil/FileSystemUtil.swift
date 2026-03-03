@@ -37,7 +37,6 @@ final public class Driver: Sendable {
         
         // Do a smoke test to make sure we have something that looks like the SwiftUsd repo
         let repoContents = try! FileManager.default.contentsOfDirectory(atPath: result.path(percentEncoded: false))
-        assert(repoContents.contains("docs"),                 "Error! Could not find SwiftUsd repo URL")
         assert(repoContents.contains("openusd-patch.patch"),  "Error! Could not find SwiftUsd repo URL")
         assert(repoContents.contains("Package.swift"),        "Error! Could not find SwiftUsd repo URL")
         assert(repoContents.contains("README.md"),            "Error! Could not find SwiftUsd repo URL")
@@ -45,7 +44,6 @@ final public class Driver: Sendable {
         assert(repoContents.contains("source"),               "Error! Could not find SwiftUsd repo URL")
         assert(repoContents.contains("swift-package"),        "Error! Could not find SwiftUsd repo URL")
         assert(repoContents.contains("SwiftUsd.docc"),        "Error! Could not find SwiftUsd repo URL")
-        assert(repoContents.contains("SwiftUsd.doccarchive"), "Error! Could not find SwiftUsd repo URL")
         
         return result
     }
@@ -58,6 +56,7 @@ final public class Driver: Sendable {
         
         symbolGraphsURL = swiftUsdRepoURL.appending(path: ".symbol-graphs")
         moduleAtObjcSymbolsURL = symbolGraphsURL.appending(path: "OpenUSD@__ObjC.symbols.json")
+        moduleAtSwiftBindingHelpersURL = symbolGraphsURL.appending(path: "OpenUSD@_OpenUSD_SwiftBindingHelpers.symbols.json")
         moduleAtCppSymbolsURL = symbolGraphsURL.appending(path: "OpenUSD@C++.symbols.json")
         
         docsURL = swiftUsdRepoURL.appending(path: "docs")
@@ -98,6 +97,7 @@ final public class Driver: Sendable {
     private let _clangExtractAPISymbolsAlreadyUsedFilenames = Mutex<Set<String>>([])
     
     public let moduleAtObjcSymbolsURL: URL
+    public let moduleAtSwiftBindingHelpersURL: URL
     public let moduleAtCppSymbolsURL: URL
     
     public let docsURL: URL
