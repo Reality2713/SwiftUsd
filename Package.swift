@@ -66,7 +66,10 @@ let package = Package(
         .executableTarget(
             name: "OpenUSDValidationCatalogTool",
             dependencies: ["_OpenUSD_SwiftBindingHelpers"],
-            path: "swift-package/Sources/OpenUSDValidationCatalogTool"
+            path: "swift-package/Sources/OpenUSDValidationCatalogTool",
+            swiftSettings: [
+                .interoperabilityMode(.Cxx)
+            ]
         )
                 
     ] + xcframeworkBinaryTargets(),
