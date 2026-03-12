@@ -21,6 +21,7 @@
 #include "swiftUsd/Wrappers/UsdValidationWrapper.h"
 
 #include <algorithm>
+#include <cctype>
 #include <sstream>
 #include <string_view>
 #include <vector>
@@ -139,6 +140,118 @@ namespace {
             return propertySpec->GetPath().GetAsString();
         }
         return {};
+    }
+
+    std::string _Lowercased(std::string value) {
+        std::transform(
+            value.begin(),
+            value.end(),
+            value.begin(),
+            [](unsigned char character) {
+                return static_cast<char>(std::tolower(character));
+            }
+        );
+        return value;
+    }
+
+    std::string _TrimAngleBrackets(std::string value) {
+        if (!value.empty() && value.front() == '<') {
+            value.erase(value.begin());
+        }
+        if (!value.empty() && value.back() == '>') {
+            value.pop_back();
+        }
+        return value;
+    }
+
+    bool _ExtractBetween(
+        const std::string &message,
+        const std::string_view prefix,
+        const std::string_view suffix,
+        std::string *captured
+    ) {
+        const auto prefixPosition = message.find(prefix);
+        if (prefixPosition == std::string::npos) {
+            return false;
+        }
+        const auto valueStart = prefixPosition + prefix.size();
+        const auto suffixPosition = message.find(suffix, valueStart);
+        if (suffixPosition == std::string::npos) {
+            return false;
+        }
+        *captured = message.substr(valueStart, suffixPosition - valueStart);
+        return true;
+    }
+
+    std::string _PropertyPathFromSites(const pxr::UsdValidationErrorSites &sites) {
+        for (const auto &site : sites) {
+            if (site.IsProperty()) {
+                return site.GetProperty().GetPath().GetAsString();
+            }
+        }
+        for (const auto &site : sites) {
+            if (const auto propertySpec = site.GetPropertySpec()) {
+                return propertySpec->GetPath().GetAsString();
+            }
+        }
+        for (const auto &site : sites) {
+            const auto objectPath = _SiteObjectPath(site);
+            if (objectPath.find('.') != std::string::npos) {
+                return objectPath;
+            }
+        }
+        return {};
+    }
+
+    void _ExtractStructuredTypeMismatchFields(
+        const pxr::UsdValidationError &error,
+        std::string *propertyPath,
+        std::string *expectedType,
+        std::string *actualType
+    ) {
+        *propertyPath = _PropertyPathFromSites(error.GetSites());
+        *expectedType = {};
+        *actualType = {};
+
+        const std::string message = error.GetMessage();
+
+        std::string extractedPath;
+        if (_ExtractBetween(
+                message,
+                "Incorrect type for ",
+                ". Expected",
+                &extractedPath
+            )) {
+            *propertyPath = _TrimAngleBrackets(extractedPath);
+            _ExtractBetween(message, "Expected '", "'; got '", expectedType);
+            _ExtractBetween(message, "'; got '", "'.", actualType);
+            *expectedType = _Lowercased(*expectedType);
+            *actualType = _Lowercased(*actualType);
+            return;
+        }
+
+        if (_ExtractBetween(
+                message,
+                "Type mismatch for attribute ",
+                ". Expected attribute type is ",
+                &extractedPath
+            )) {
+            *propertyPath = _TrimAngleBrackets(extractedPath);
+            _ExtractBetween(
+                message,
+                "Expected attribute type is '",
+                "' but defined as '",
+                expectedType
+            );
+            _ExtractBetween(
+                message,
+                "' but defined as '",
+                "' in layer ",
+                actualType
+            );
+            *expectedType = _Lowercased(*expectedType);
+            *actualType = _Lowercased(*actualType);
+        }
     }
 
     void _AppendKeywordArray(
@@ -339,6 +452,16 @@ namespace {
             }
             isFirst = false;
 
+            std::string propertyPath;
+            std::string expectedType;
+            std::string actualType;
+            _ExtractStructuredTypeMismatchFields(
+                error,
+                &propertyPath,
+                &expectedType,
+                &actualType
+            );
+
             stream << '{';
             stream << "\"name\":";
             _AppendJSONString(stream, error.GetName().GetString());
@@ -360,6 +483,24 @@ namespace {
             } else {
                 stream << "null";
             }
+            stream << ",\"propertyPath\":";
+            if (propertyPath.empty()) {
+                stream << "null";
+            } else {
+                _AppendJSONString(stream, propertyPath);
+            }
+            stream << ",\"expectedType\":";
+            if (expectedType.empty()) {
+                stream << "null";
+            } else {
+                _AppendJSONString(stream, expectedType);
+            }
+            stream << ",\"actualType\":";
+            if (actualType.empty()) {
+                stream << "null";
+            } else {
+                _AppendJSONString(stream, actualType);
+            }
             stream << ",\"sites\":";
             _AppendSites(stream, error.GetSites());
             stream << ",\"fixers\":";
@@ -380,6 +521,9 @@ namespace {
             _AppendJSONString(stream, iterator->GetCommentary());
             stream << ",\"validatorName\":\"swiftUsd:ValidationBridge\",";
             stream << "\"validatorDocumentation\":\"OpenUSD reported a TfError while loading validators or executing validation\",";
+            stream << "\"propertyPath\":null,";
+            stream << "\"expectedType\":null,";
+            stream << "\"actualType\":null,";
             stream << "\"sites\":[],\"fixers\":[]";
             stream << '}';
         }
