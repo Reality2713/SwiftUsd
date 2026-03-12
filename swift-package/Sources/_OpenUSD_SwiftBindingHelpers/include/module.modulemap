@@ -1641,6 +1641,7 @@ module _OpenUSD_SwiftBindingHelpers {
     header "swiftUsd/Wrappers/UsdImagingGLEngineWrapper.h"
     header "swiftUsd/Wrappers/UsdPrimRangeIteratorWrapper.h"
     header "swiftUsd/Wrappers/UsdPrimTypeInfoWrapper.h"
+    header "swiftUsd/Wrappers/UsdValidationWrapper.h"
     header "swiftUsd/Wrappers/VtDictionaryConstIteratorWrapper.h"
 }
 
@@ -1663,6 +1664,11 @@ module SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT {
 module SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT {}
 module SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT {}
 module SwiftUsd_PXR_ENABLE_IMAGEIO_SUPPORT {}
+module SwiftUsd_PXR_ENABLE_USD_VALIDATION_SUPPORT {
+    // OpenUSD validator binaries are currently packaged only for macOS.
+    requires !ios
+    requires !xros
+}
 module SwiftUsd_PXR_ENABLE_MATERIALX_SUPPORT {}
 module SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT {
     // OpenVDB is not available on embedded platforms
