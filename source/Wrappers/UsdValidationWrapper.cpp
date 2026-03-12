@@ -256,6 +256,76 @@ namespace {
         return stream.str();
     }
 
+    std::string _SerializeRuleCandidates(
+        const std::vector<const pxr::UsdValidationValidator *> &validators
+    ) {
+        std::vector<const pxr::UsdValidationValidator *> sortedValidators = validators;
+        std::sort(
+            sortedValidators.begin(),
+            sortedValidators.end(),
+            [](const auto *lhs, const auto *rhs) {
+                if (lhs == nullptr || rhs == nullptr) {
+                    return lhs != nullptr;
+                }
+                return lhs->GetMetadata().name < rhs->GetMetadata().name;
+            }
+        );
+
+        std::ostringstream stream;
+        stream << '[';
+        bool isFirstValidator = true;
+        for (const auto *validator : sortedValidators) {
+            if (!validator) {
+                continue;
+            }
+            if (!isFirstValidator) {
+                stream << ',';
+            }
+            isFirstValidator = false;
+
+            const auto &metadata = validator->GetMetadata();
+            const auto fixers = validator->GetFixers();
+
+            stream << '{';
+            stream << "\"validatorName\":";
+            _AppendJSONString(stream, metadata.name.GetString());
+            stream << ",\"pluginName\":";
+            if (metadata.pluginPtr) {
+                _AppendJSONString(stream, metadata.pluginPtr->GetName());
+            } else {
+                stream << "null";
+            }
+            stream << ",\"documentation\":";
+            _AppendJSONString(stream, metadata.doc);
+            stream << ",\"keywords\":";
+            _AppendKeywordArray(stream, metadata.keywords);
+            stream << ",\"schemaTypes\":";
+            _AppendKeywordArray(stream, metadata.schemaTypes);
+            stream << ",\"candidateRuleIdentifiers\":";
+            stream << '[';
+            bool isFirstCandidate = true;
+            for (const auto *fixer : fixers) {
+                if (!fixer) {
+                    continue;
+                }
+                if (!isFirstCandidate) {
+                    stream << ',';
+                }
+                isFirstCandidate = false;
+                _AppendJSONString(
+                    stream,
+                    metadata.name.GetString() + "." + fixer->GetErrorName().GetString()
+                );
+            }
+            stream << ']';
+            stream << ",\"fixers\":";
+            _AppendFixers(stream, fixers);
+            stream << '}';
+        }
+        stream << ']';
+        return stream.str();
+    }
+
     std::string _SerializeErrors(
         const pxr::UsdValidationErrorVector &errors,
         const pxr::TfErrorMark &errorMark
@@ -350,6 +420,18 @@ std::string Overlay::UsdValidationWrapper::GetValidatorMetadataForKeywordsJSON(
         pxr::UsdValidationRegistry::GetInstance().GetValidatorMetadataForKeywords(
             _ToTfTokenVector(keywords)
         )
+    );
+#else
+    return "[]";
+#endif
+}
+
+std::string Overlay::UsdValidationWrapper::GetAllValidatorRuleCandidatesJSON() {
+#if SWIFTUSD_HAS_USDVALIDATION_REGISTRY
+    pxr::TfErrorMark errorMark;
+    _EnsureValidationRegistryLoaded();
+    return _SerializeRuleCandidates(
+        pxr::UsdValidationRegistry::GetInstance().GetOrLoadAllValidators()
     );
 #else
     return "[]";
