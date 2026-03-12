@@ -51,6 +51,7 @@
 #include "swiftUsd/Wrappers/UsdAppUtilsFrameRecorderWrapper.h"
 #include "swiftUsd/Wrappers/UsdImagingGLEngineWrapper.h"
 #include "swiftUsd/Wrappers/UsdPrimTypeInfoWrapper.h"
+#include "swiftUsd/Wrappers/UsdValidationWrapper.h"
 
 
 
@@ -79,6 +80,7 @@
 #includeforswiftdocc "swiftUsd/Wrappers/UsdAppUtilsFrameRecorderWrapper.h"
 #includeforswiftdocc "swiftUsd/Wrappers/UsdImagingGLEngineWrapper.h"
 #includeforswiftdocc "swiftUsd/Wrappers/UsdPrimTypeInfoWrapper.h"
+#includeforswiftdocc "swiftUsd/Wrappers/UsdValidationWrapper.h"
 
 #includeforswiftdocc "swiftUsd/SwiftOverlay/HydraHelpers.h"
 #includeforswiftdocc "swiftUsd/SwiftOverlay/Miscellaneous.h"

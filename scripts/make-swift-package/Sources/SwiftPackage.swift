@@ -191,7 +191,12 @@ struct SwiftPackage {
                         result.append(#"// header "\#(relativePath)" // 24.05 HdSt_MaterialNetworkShader #include fix"#)
                         continue
                     }
-                    if relativePath.starts(with: "pxr/usdImaging/usdBakeMtlx/") {
+                    if relativePath.starts(with: "pxr/usdImaging/usdBakeMtlx/") ||
+                        relativePath.starts(with: "pxr/usdValidation") {
+                        // Keep usdValidation headers private for now. Swift-facing
+                        // access should go through a narrow wrapper so the app can
+                        // treat OpenUSD validators as the canonical validity engine
+                        // without importing the full validation C++ surface directly.
                         continue
                     }
                     if relativePath.starts(with: "pxr/usdImaging/usdviewq") {
