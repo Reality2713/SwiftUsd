@@ -69,6 +69,9 @@ public struct UsdValidationIssueDescriptor: Codable, Sendable, Hashable {
     public let message: String
     public let validatorName: String?
     public let validatorDocumentation: String?
+    public let propertyPath: String?
+    public let expectedType: String?
+    public let actualType: String?
     public let sites: [UsdValidationSiteDescriptor]
     public let fixers: [UsdValidationFixerDescriptor]
 }
