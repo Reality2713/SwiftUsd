@@ -52,6 +52,16 @@ public struct UsdValidationValidatorDescriptor: Codable, Sendable, Hashable {
     public let isTimeDependent: Bool
 }
 
+public struct UsdValidationRuleCandidateDescriptor: Codable, Sendable, Hashable {
+    public let validatorName: String
+    public let pluginName: String?
+    public let documentation: String
+    public let keywords: [String]
+    public let schemaTypes: [String]
+    public let candidateRuleIdentifiers: [String]
+    public let fixers: [UsdValidationFixerDescriptor]
+}
+
 public struct UsdValidationIssueDescriptor: Codable, Sendable, Hashable {
     public let name: String
     public let identifier: String
@@ -97,6 +107,10 @@ extension Overlay.UsdValidationWrapper {
         try _UsdValidationJSON.decode(
             GetValidatorMetadataForKeywordsJSON(.init(keywords))
         )
+    }
+
+    public static func allValidatorRuleCandidates() throws -> [UsdValidationRuleCandidateDescriptor] {
+        try _UsdValidationJSON.decode(GetAllValidatorRuleCandidatesJSON())
     }
 
     public static func validateStage<S: Sequence>(

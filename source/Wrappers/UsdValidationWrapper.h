@@ -41,6 +41,8 @@ namespace Overlay {
         static std::string GetValidatorMetadataForKeywordsJSON(
             const Overlay::String_Vector &keywords);
 
+        static std::string GetAllValidatorRuleCandidatesJSON();
+
         static std::string ValidateStageJSON(
             const pxr::UsdStageRefPtr &stage,
             const Overlay::String_Vector &keywords);
