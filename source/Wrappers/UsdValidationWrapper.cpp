@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <mutex>
 #include <sstream>
 #include <string_view>
 #include <vector>
@@ -109,8 +110,11 @@ namespace {
     }
 
     void _EnsureValidationRegistryLoaded() {
-        pxr::PlugRegistry::GetInstance().GetAllPlugins();
-        pxr::UsdValidationRegistry::GetInstance().GetOrLoadAllValidators();
+        static std::once_flag flag;
+        std::call_once(flag, [] {
+            pxr::PlugRegistry::GetInstance().GetAllPlugins();
+            pxr::UsdValidationRegistry::GetInstance().GetOrLoadAllValidators();
+        });
     }
 
     std::string _SiteKind(const pxr::UsdValidationErrorSite &site) {
