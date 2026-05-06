@@ -5324,7 +5324,9 @@ extension pxr.UsdVolImagingTokens_StaticTokenType: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.VdfScheduleInput: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.VdfScheduleNode: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.VdfDataManagerFacade: @unchecked Sendable {}
+#if compiler(<6.3)
 @available(*, unavailable) extension pxr.VdfDataManagerHashTable: @unchecked Sendable {}
+#endif // #if compiler(<6.3)
 @available(*, unavailable) extension pxr.VdfExecutionStatsProcessor: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.VdfGrapherOptions: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.VdfGrapherOptions.NodeLimitVector: @unchecked Sendable {}
@@ -6101,7 +6103,11 @@ extension pxr.UsdVolImagingTokens_StaticTokenType: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.UsdImagingPluginLightAdapter: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.UsdImagingPluginLightFilterAdapter: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.UsdImagingPointsAdapter: @unchecked Sendable {}
+#endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)
+#if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && compiler(<6.3)
 @available(*, unavailable) extension pxr.UsdImagingPointInstancerAdapter: @unchecked Sendable {}
+#endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && compiler(<6.3)
+#if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)
 @available(*, unavailable) extension pxr.UsdImagingPortalLightAdapter: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.UsdImagingRootOverridesSceneIndexRefPtr: @unchecked Sendable {}
 @available(*, unavailable) extension pxr.UsdImagingRootOverridesSceneIndex: @unchecked Sendable {}
