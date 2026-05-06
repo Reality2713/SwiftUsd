@@ -23,14 +23,29 @@
 std::pair<pxr::VtDictionary::iterator, bool> __Overlay::insert(pxr::VtDictionary* d, const pxr::VtDictionary::value_type& obj) {
     return d->insert(obj);
 }
+pxr::VtDictionary::const_iterator __Overlay::begin(const pxr::VtDictionary& d) {
+    return d.begin();
+}
+pxr::VtDictionary::const_iterator __Overlay::end(const pxr::VtDictionary& d) {
+    return d.end();
+}
 pxr::VtDictionary::const_iterator __Overlay::find(const pxr::VtDictionary& d, const std::string& key) {
     return d.find(key);
 }
 pxr::VtDictionary::iterator __Overlay::findMutating(pxr::VtDictionary* d, const std::string& key) {
     return d->find(key);
 }
+pxr::VtDictionary::iterator __Overlay::endMutating(pxr::VtDictionary* d) {
+    return d->end();
+}
+pxr::VtDictionary::size_type __Overlay::erase(pxr::VtDictionary* d, const std::string& key) {
+    return d->erase(key);
+}
 pxr::VtValue __Overlay::operatorSubscript(const pxr::VtDictionary& d, const std::string& key, bool* isValid) {
     auto it = d.find(key);
     *isValid = it != d.end();
     return *isValid ? it->second : pxr::VtValue();
+}
+void __Overlay::setValue(pxr::VtDictionary* d, const std::string& key, const pxr::VtValue& value) {
+    (*d)[key] = value;
 }

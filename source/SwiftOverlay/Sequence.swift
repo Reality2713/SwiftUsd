@@ -75,7 +75,7 @@ extension pxr.UsdPrimSiblingRange: __Overlay.OpenUSD_Sequence {}
 extension pxr.UsdPrimSiblingRange.const_iterator: __Overlay.OpenUSD_Sequence_const_iterator {}
 
 
-extension pxr.VtDictionary: CxxDictionary, CxxSequence {
+extension pxr.VtDictionary {
     public typealias RawIterator = pxr.VtDictionary.const_iterator
     public typealias RawMutableIterator = pxr.VtDictionary.iterator
 
@@ -85,6 +85,12 @@ extension pxr.VtDictionary: CxxDictionary, CxxSequence {
     public typealias InsertionResult = Overlay.VtDictionary_Iterator_Bool_Pair
     public typealias Element = pxr.VtDictionary.value_type
 
+    public func __beginUnsafe() -> Self.RawIterator {
+        __Overlay.begin(self)
+    }
+    public func __endUnsafe() -> Self.RawIterator {
+        __Overlay.end(self)
+    }
     public mutating func __insertUnsafe(_ element: Self.Element) -> Self.InsertionResult {
         __Overlay.insert(&self, element)
     }
@@ -100,11 +106,15 @@ extension pxr.VtDictionary: CxxDictionary, CxxSequence {
         __Overlay.findMutating(&self, key)
     }
     @discardableResult
+    public mutating func erase(_ key: Self.Key) -> Self.Size {
+        __Overlay.erase(&self, key)
+    }
+    @discardableResult
     public mutating func __eraseUnsafe(_ iter: RawMutableIterator) -> RawMutableIterator {
         erase(iter)
     }
     public mutating func __endMutatingUnsafe() -> Self.RawMutableIterator {
-        end()
+        __Overlay.endMutating(&self)
     }
 }
 

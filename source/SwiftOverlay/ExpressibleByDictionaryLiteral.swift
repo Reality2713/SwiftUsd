@@ -25,7 +25,7 @@ extension pxr.VtDictionary: ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (std.string, pxr.VtValue)...) {
         self.init()
         for (key, value) in elements {
-            self[key] = value
+            __Overlay.setValue(&self, key, value)
         }
     }
 }
