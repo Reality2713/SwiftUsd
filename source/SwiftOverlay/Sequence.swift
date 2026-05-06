@@ -98,6 +98,9 @@ extension pxr.VtDictionary: CxxDictionary, CxxSequence {
     public mutating func __eraseUnsafe(_ iter: RawMutableIterator) -> RawMutableIterator {
         erase(iter)
     }
+    public mutating func __endMutatingUnsafe() -> Self.RawMutableIterator {
+        end()
+    }
 }
 
 extension pxr.VtDictionary.const_iterator: UnsafeCxxInputIterator {}
