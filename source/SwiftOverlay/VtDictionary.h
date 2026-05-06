@@ -28,9 +28,14 @@
 
 namespace __Overlay {
     std::pair<pxr::VtDictionary::iterator, bool> insert(pxr::VtDictionary* d, const pxr::VtDictionary::value_type& obj);
+    pxr::VtDictionary::const_iterator begin(const pxr::VtDictionary& d);
+    pxr::VtDictionary::const_iterator end(const pxr::VtDictionary& d);
     pxr::VtDictionary::const_iterator find(const pxr::VtDictionary& d, const std::string& key);
     pxr::VtDictionary::iterator findMutating(pxr::VtDictionary* d, const std::string& key);
+    pxr::VtDictionary::iterator endMutating(pxr::VtDictionary* d);
+    pxr::VtDictionary::size_type erase(pxr::VtDictionary* d, const std::string& key);
     pxr::VtValue operatorSubscript(const pxr::VtDictionary& d, const std::string& key, bool* isValid);
+    void setValue(pxr::VtDictionary* d, const std::string& key, const pxr::VtValue& value);
 }
 
 #endif /* SWIFTUSD_SWIFTOVERLAY_VTDICTIONARY_H */
