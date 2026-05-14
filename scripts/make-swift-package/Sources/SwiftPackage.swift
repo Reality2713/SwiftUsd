@@ -555,8 +555,7 @@ struct SwiftPackage {
         // breaks `swift build` on the command line, because `__ZNSt3__122__cxx_atomic_fetch_subB8ne180100IiEET_PNS_22__cxx_atomic_base_implIS1_EES1_NS_12memory_orderE`
         // becomes a duplicate symbol, so let Swift know not to do that workaround. 
         extraArgs += ["-Xcxx", "-DOPENUSD_SWIFT_BUILD_FROM_CLI",
-                      "-Xswiftc", "-DOPENUSD_SWIFT_BUILD_FROM_CLI",
-                      "-Xswiftc", "-Xcc", "-Xswiftc", "-fcxx-modules"]
+                      "-Xswiftc", "-DOPENUSD_SWIFT_BUILD_FROM_CLI"]
         
         // Avoid `__gnu_objc_personality_v0` linker error by specifying
         // the C++ exception type

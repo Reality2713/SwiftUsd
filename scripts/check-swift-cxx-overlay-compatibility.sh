@@ -78,16 +78,10 @@ if "module _OpenUSD_SwiftBindingHelpers {\n    requires cplusplus" not in module
     fail("_OpenUSD_SwiftBindingHelpers module map must require cplusplus for Xcode explicit module scanning")
 if '"    requires cplusplus"' not in modulemap_generator_text:
     fail("make-swift-package must preserve requires cplusplus in regenerated module maps")
-if '.unsafeFlags(["-Xcc", "-fcxx-modules"])' not in package_manifest_text:
-    fail("Package.swift must pass -fcxx-modules through Swift settings for Xcode explicit module scanning")
-if '.unsafeFlags(["-Xcc", "-fcxx-modules"])' not in package_template_text:
-    fail("Package.swift.in must preserve -fcxx-modules when Package.swift is regenerated")
-if 'cxxSettings: [\n                    .unsafeFlags(["-fcxx-modules"])' not in package_manifest_text:
-    fail("_OpenUSD_SwiftBindingHelpers target must pass -fcxx-modules through C++ settings")
-if 'cxxSettings: [\n                    .unsafeFlags(["-fcxx-modules"])' not in package_template_text:
-    fail("Package.swift.in must preserve _OpenUSD_SwiftBindingHelpers -fcxx-modules C++ settings")
-if '"-Xswiftc", "-Xcc", "-Xswiftc", "-fcxx-modules"' not in modulemap_generator_text:
-    fail("make-swift-package extraArgs must preserve -fcxx-modules for regenerated CLI package settings")
+if "fcxx-modules" in package_manifest_text or "fcxx-modules" in package_template_text:
+    fail("SwiftUsd package targets must not use -fcxx-modules unsafe flags; unsafe flags make OpenUSD unusable as a dependency product")
+if "fcxx-modules" in modulemap_generator_text:
+    fail("make-swift-package extraArgs must not emit -fcxx-modules unsafe flags")
 
 dictionary_protocol = re.search(
     r"public protocol CxxDictionary\b(?P<body>.*?)(?=\nextension Cxx\.CxxDictionary\b)",
