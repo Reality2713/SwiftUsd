@@ -17,6 +17,7 @@ repo_root = pathlib.Path(sys.argv[1])
 sequence = repo_root / "source/SwiftOverlay/Sequence.swift"
 vt_array_protocol = repo_root / "source/SwiftOverlay/VtArrayProtocol.swift"
 usd_prim_range = repo_root / "source/SwiftOverlay/UsdPrimRange.swift"
+sdf_proxy_types_iterator = repo_root / "source/Wrappers/SdfProxyTypesIteratorWrapper.swift"
 vt_header = repo_root / "source/SwiftOverlay/VtDictionary.h"
 vt_impl = repo_root / "source/SwiftOverlay/VtDictionary.cpp"
 generated_modulemap = repo_root / "swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/module.modulemap"
@@ -49,6 +50,7 @@ def run(args: list[str]) -> str:
 sequence_text = read(sequence)
 vt_array_protocol_text = read(vt_array_protocol)
 usd_prim_range_text = read(usd_prim_range)
+sdf_proxy_types_iterator_text = read(sdf_proxy_types_iterator)
 header_text = read(vt_header)
 impl_text = read(vt_impl)
 modulemap_text = read(generated_modulemap)
@@ -136,6 +138,8 @@ if "for x in self" in read(repo_root / "source/SwiftOverlay/Codable.swift"):
     fail("VtArray Codable implementations must use indexed access, not Sequence iteration")
 if "extension pxr.UsdPrimRange: Sequence" in usd_prim_range_text:
     fail("UsdPrimRange must expose explicit swiftSequence instead of direct Swift Sequence conformance")
+if "public protocol SdfProxyTypesSequenceProtocol: Sequence" in sdf_proxy_types_iterator_text:
+    fail("Sdf proxy helper protocols must not force imported C++ proxy types through Swift Sequence")
 
 required_witnesses = [
     "public func __beginUnsafe() -> Self.RawIterator",
