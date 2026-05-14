@@ -22,6 +22,8 @@ vt_header = repo_root / "source/SwiftOverlay/VtDictionary.h"
 vt_impl = repo_root / "source/SwiftOverlay/VtDictionary.cpp"
 generated_modulemap = repo_root / "swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/module.modulemap"
 modulemap_generator = repo_root / "scripts/make-swift-package/Sources/SwiftPackage.swift"
+package_manifest = repo_root / "Package.swift"
+package_template = repo_root / "source/Package.swift.in"
 
 
 def fail(message: str) -> None:
@@ -55,6 +57,8 @@ header_text = read(vt_header)
 impl_text = read(vt_impl)
 modulemap_text = read(generated_modulemap)
 modulemap_generator_text = read(modulemap_generator)
+package_manifest_text = read(package_manifest)
+package_template_text = read(package_template)
 
 swiftc = run(["xcrun", "--find", "swiftc"])
 toolchain_root = pathlib.Path(swiftc).parents[2]
@@ -74,6 +78,12 @@ if "module _OpenUSD_SwiftBindingHelpers {\n    requires cplusplus" not in module
     fail("_OpenUSD_SwiftBindingHelpers module map must require cplusplus for Xcode explicit module scanning")
 if '"    requires cplusplus"' not in modulemap_generator_text:
     fail("make-swift-package must preserve requires cplusplus in regenerated module maps")
+if '.unsafeFlags(["-Xcc", "-fcxx-modules"])' not in package_manifest_text:
+    fail("Package.swift must pass -fcxx-modules through Swift settings for Xcode explicit module scanning")
+if '.unsafeFlags(["-Xcc", "-fcxx-modules"])' not in package_template_text:
+    fail("Package.swift.in must preserve -fcxx-modules when Package.swift is regenerated")
+if '"-Xswiftc", "-Xcc", "-Xswiftc", "-fcxx-modules"' not in modulemap_generator_text:
+    fail("make-swift-package extraArgs must preserve -fcxx-modules for regenerated CLI package settings")
 
 dictionary_protocol = re.search(
     r"public protocol CxxDictionary\b(?P<body>.*?)(?=\nextension Cxx\.CxxDictionary\b)",

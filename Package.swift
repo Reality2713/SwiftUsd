@@ -49,7 +49,8 @@ let package = Package(
                 ],
                 path: "swift-package/Sources/OpenUSD",
                 swiftSettings: [
-                    .interoperabilityMode(.Cxx)
+                    .interoperabilityMode(.Cxx),
+                    .unsafeFlags(["-Xcc", "-fcxx-modules"])
                 ]),
 
         .macro(name: "_OpenUSD_MacroImplementations",
@@ -68,7 +69,8 @@ let package = Package(
             dependencies: ["_OpenUSD_SwiftBindingHelpers"],
             path: "swift-package/Sources/OpenUSDValidationCatalogTool",
             swiftSettings: [
-                .interoperabilityMode(.Cxx)
+                .interoperabilityMode(.Cxx),
+                .unsafeFlags(["-Xcc", "-fcxx-modules"])
             ]
         )
                 
