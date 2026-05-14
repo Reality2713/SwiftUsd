@@ -17,6 +17,8 @@ repo_root = pathlib.Path(sys.argv[1])
 sequence = repo_root / "source/SwiftOverlay/Sequence.swift"
 vt_header = repo_root / "source/SwiftOverlay/VtDictionary.h"
 vt_impl = repo_root / "source/SwiftOverlay/VtDictionary.cpp"
+generated_modulemap = repo_root / "swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/module.modulemap"
+modulemap_generator = repo_root / "scripts/make-swift-package/Sources/SwiftPackage.swift"
 
 
 def fail(message: str) -> None:
@@ -45,6 +47,8 @@ def run(args: list[str]) -> str:
 sequence_text = read(sequence)
 header_text = read(vt_header)
 impl_text = read(vt_impl)
+modulemap_text = read(generated_modulemap)
+modulemap_generator_text = read(modulemap_generator)
 
 swiftc = run(["xcrun", "--find", "swiftc"])
 toolchain_root = pathlib.Path(swiftc).parents[2]
@@ -59,6 +63,11 @@ cxx_text = read(cxx_interface)
 
 if "public protocol CxxDictionary" not in cxx_text:
     fail("active toolchain Cxx module does not expose CxxDictionary")
+
+if "module _OpenUSD_SwiftBindingHelpers {\n    requires cplusplus" not in modulemap_text:
+    fail("_OpenUSD_SwiftBindingHelpers module map must require cplusplus for Xcode explicit module scanning")
+if '"    requires cplusplus"' not in modulemap_generator_text:
+    fail("make-swift-package must preserve requires cplusplus in regenerated module maps")
 
 dictionary_protocol = re.search(
     r"public protocol CxxDictionary\b(?P<body>.*?)(?=\nextension Cxx\.CxxDictionary\b)",
