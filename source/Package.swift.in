@@ -46,8 +46,7 @@ let package = Package(
                 ],
                 path: "${generated-package-prefix}Sources/OpenUSD",
                 swiftSettings: [
-                    .interoperabilityMode(.Cxx),
-                    .unsafeFlags(["-Xcc", "-fcxx-modules"])
+                    .interoperabilityMode(.Cxx)
                 ]),
 
         .macro(name: "_OpenUSD_MacroImplementations",
@@ -59,10 +58,7 @@ let package = Package(
                 
         .target(name: "_OpenUSD_SwiftBindingHelpers",
                 dependencies: cppTarget_dependencies(),
-                path: "${generated-package-prefix}Sources/_OpenUSD_SwiftBindingHelpers",
-                cxxSettings: [
-                    .unsafeFlags(["-fcxx-modules"])
-                ])
+                path: "${generated-package-prefix}Sources/_OpenUSD_SwiftBindingHelpers")
                 
     ] + xcframeworkBinaryTargets(),
     cxxLanguageStandard: .gnucxx17
