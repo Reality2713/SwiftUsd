@@ -70,11 +70,16 @@ extension __Overlay.VtArray_ExpressibleByArrayLiteral where ArrayLiteralElement 
 }
 
 extension __Overlay {
-    public protocol VtArray_CustomStringConvertible: CustomStringConvertible, Sequence where Element: CustomStringConvertible {}
+    public protocol VtArray_CustomStringConvertible: CustomStringConvertible where Element: CustomStringConvertible {
+        associatedtype Element
+        func size() -> Int
+        subscript(_ :Int) -> Element { get }
+    }
 }
 extension __Overlay.VtArray_CustomStringConvertible {
     public var description: String {
-        "[" + map { $0.description }.joined(separator: ", ") + "]"
+        let elements = (0..<size()).map { self[$0].description }
+        return "[" + elements.joined(separator: ", ") + "]"
     }
 }
 
@@ -102,8 +107,7 @@ extension __Overlay {
 }
 
 extension __Overlay {
-    public protocol VtArray_Sequence: Sequence
-        where Element == ElementType, Iterator == __Overlay.VtArray_Sequence_Iterator<Self> {
+    public protocol VtArray_Sequence {
         associatedtype ElementType
         func __beginUnsafe() -> UnsafePointer<ElementType>?
         func __endUnsafe() -> UnsafePointer<ElementType>?
