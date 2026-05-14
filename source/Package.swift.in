@@ -59,7 +59,10 @@ let package = Package(
                 
         .target(name: "_OpenUSD_SwiftBindingHelpers",
                 dependencies: cppTarget_dependencies(),
-                path: "${generated-package-prefix}Sources/_OpenUSD_SwiftBindingHelpers")
+                path: "${generated-package-prefix}Sources/_OpenUSD_SwiftBindingHelpers",
+                cxxSettings: [
+                    .unsafeFlags(["-fcxx-modules"])
+                ])
                 
     ] + xcframeworkBinaryTargets(),
     cxxLanguageStandard: .gnucxx17
