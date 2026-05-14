@@ -128,8 +128,12 @@ if "CxxDictionary" in conformances or "CxxSequence" in conformances:
 
 if "public protocol OpenUSD_Sequence: Sequence\n        where Element == value_type, Iterator == __Overlay.OpenUSD_Iterator<Self>" not in sequence_text:
     fail("OpenUSD_Sequence must pin Element and Iterator to the Swift overlay iterator")
-if "public protocol VtArray_Sequence: Sequence\n        where Element == ElementType, Iterator == __Overlay.VtArray_Sequence_Iterator<Self>" not in vt_array_protocol_text:
-    fail("VtArray_Sequence must pin Element and Iterator to the Swift overlay iterator")
+if "public protocol VtArray_CustomStringConvertible: CustomStringConvertible, Sequence" in vt_array_protocol_text:
+    fail("VtArray description must not require broad Swift Sequence conformance")
+if "public protocol VtArray_Sequence: Sequence" in vt_array_protocol_text:
+    fail("VtArray_Sequence must not inherit Swift Sequence under Swift 6.3.2 C++ interop")
+if "for x in self" in read(repo_root / "source/SwiftOverlay/Codable.swift"):
+    fail("VtArray Codable implementations must use indexed access, not Sequence iteration")
 if "extension pxr.UsdPrimRange: Sequence" in usd_prim_range_text:
     fail("UsdPrimRange must expose explicit swiftSequence instead of direct Swift Sequence conformance")
 

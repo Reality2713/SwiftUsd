@@ -1320,7 +1320,7 @@ extension pxr.GfVec4i: Codable {
 
 // MARK: Vt
 
-extension __Overlay.VtArray_Codable where ElementType: Codable, Self: __Overlay.VtArray_ExpressibleByArrayLiteral, Self: __Overlay.VtArray_Sequence, ElementType == Element, ElementType == ArrayLiteralElement {
+extension __Overlay.VtArray_Codable where ElementType: Codable, Self: __Overlay.VtArray_ExpressibleByArrayLiteral, Self: __Overlay.VtArray_Equatable, ElementType == Element, ElementType == ArrayLiteralElement {
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
 
@@ -1334,8 +1334,8 @@ extension __Overlay.VtArray_Codable where ElementType: Codable, Self: __Overlay.
     public func encode(to encoder: Encoder) throws {
         var container = try encoder.unkeyedContainer()
 
-        for x in self {
-            try container.encode(x)
+        for index in 0..<size() {
+            try container.encode(self[index])
         }
     }
 }
@@ -1354,8 +1354,8 @@ extension pxr.VtStringArray: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = try encoder.unkeyedContainer()
 
-        for x in self {
-            try container.encode(String(x))
+        for index in 0..<size() {
+            try container.encode(String(self[index]))
         }
     }    
 }
@@ -1506,4 +1506,3 @@ extension pxr.UsdTimeCode: Codable {
         }
     }
 }
-
