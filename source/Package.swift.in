@@ -46,7 +46,8 @@ let package = Package(
                 ],
                 path: "${generated-package-prefix}Sources/OpenUSD",
                 swiftSettings: [
-                    .interoperabilityMode(.Cxx)
+                    .interoperabilityMode(.Cxx),
+                    .unsafeFlags(["-Xcc", "-fcxx-modules"])
                 ]),
 
         .macro(name: "_OpenUSD_MacroImplementations",
