@@ -34,7 +34,7 @@ extension Overlay {
         var box: Box<Overlay.UsdPrimRangeIteratorWrapper>
 
         init(_ range: pxr.UsdPrimRange) {
-            box = Box(value: range.makeIterator())
+            box = Box(value: range.swiftSequence.makeIterator())
         }
 
         public func makeIterator() -> Iterator {

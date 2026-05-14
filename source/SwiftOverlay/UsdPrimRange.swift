@@ -21,9 +21,23 @@
 import Foundation
 
 
-extension pxr.UsdPrimRange: Sequence {
-    public func makeIterator() -> Overlay.UsdPrimRangeIteratorWrapper {
+extension pxr.UsdPrimRange {
+    public var swiftSequence: Overlay.UsdPrimRangeSequence {
         .init(self)
+    }
+}
+
+extension Overlay {
+    public struct UsdPrimRangeSequence: Sequence {
+        let range: pxr.UsdPrimRange
+
+        init(_ range: pxr.UsdPrimRange) {
+            self.range = range
+        }
+
+        public func makeIterator() -> Overlay.UsdPrimRangeIteratorWrapper {
+            .init(range)
+        }
     }
 }
 

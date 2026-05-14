@@ -15,6 +15,8 @@ import sys
 
 repo_root = pathlib.Path(sys.argv[1])
 sequence = repo_root / "source/SwiftOverlay/Sequence.swift"
+vt_array_protocol = repo_root / "source/SwiftOverlay/VtArrayProtocol.swift"
+usd_prim_range = repo_root / "source/SwiftOverlay/UsdPrimRange.swift"
 vt_header = repo_root / "source/SwiftOverlay/VtDictionary.h"
 vt_impl = repo_root / "source/SwiftOverlay/VtDictionary.cpp"
 generated_modulemap = repo_root / "swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/module.modulemap"
@@ -45,6 +47,8 @@ def run(args: list[str]) -> str:
 
 
 sequence_text = read(sequence)
+vt_array_protocol_text = read(vt_array_protocol)
+usd_prim_range_text = read(usd_prim_range)
 header_text = read(vt_header)
 impl_text = read(vt_impl)
 modulemap_text = read(generated_modulemap)
@@ -121,6 +125,13 @@ if "CxxDictionary" in conformances or "CxxSequence" in conformances:
         "6.3 imports VtDictionary.value_type in a shape that cannot satisfy "
         "CxxDictionary's Element/Key equality requirements"
     )
+
+if "public protocol OpenUSD_Sequence: Sequence\n        where Element == value_type, Iterator == __Overlay.OpenUSD_Iterator<Self>" not in sequence_text:
+    fail("OpenUSD_Sequence must pin Element and Iterator to the Swift overlay iterator")
+if "public protocol VtArray_Sequence: Sequence\n        where Element == ElementType, Iterator == __Overlay.VtArray_Sequence_Iterator<Self>" not in vt_array_protocol_text:
+    fail("VtArray_Sequence must pin Element and Iterator to the Swift overlay iterator")
+if "extension pxr.UsdPrimRange: Sequence" in usd_prim_range_text:
+    fail("UsdPrimRange must expose explicit swiftSequence instead of direct Swift Sequence conformance")
 
 required_witnesses = [
     "public func __beginUnsafe() -> Self.RawIterator",

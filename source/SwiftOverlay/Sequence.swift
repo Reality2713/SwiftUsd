@@ -54,14 +54,15 @@ extension __Overlay {
 }
 
 extension __Overlay {
-    public protocol OpenUSD_Sequence: Sequence {
+    public protocol OpenUSD_Sequence: Sequence
+        where Element == value_type, Iterator == __Overlay.OpenUSD_Iterator<Self> {
         associatedtype value_type
         associatedtype const_iterator: OpenUSD_Sequence_const_iterator where const_iterator.value_type == value_type
         func __beginUnsafe() -> const_iterator
         func __endUnsafe() -> const_iterator
     }
 }
-extension __Overlay.OpenUSD_Sequence where Element == Self.value_type {
+extension __Overlay.OpenUSD_Sequence {
     public func makeIterator() -> __Overlay.OpenUSD_Iterator<Self> {
         .init(begin: __beginUnsafe(), end: __endUnsafe(), s: self)
     }

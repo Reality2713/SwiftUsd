@@ -102,13 +102,14 @@ extension __Overlay {
 }
 
 extension __Overlay {
-    public protocol VtArray_Sequence: Sequence {
+    public protocol VtArray_Sequence: Sequence
+        where Element == ElementType, Iterator == __Overlay.VtArray_Sequence_Iterator<Self> {
         associatedtype ElementType
         func __beginUnsafe() -> UnsafePointer<ElementType>?
         func __endUnsafe() -> UnsafePointer<ElementType>?
     }
 }
-extension __Overlay.VtArray_Sequence where Element == Self.ElementType {
+extension __Overlay.VtArray_Sequence {
     public func makeIterator() -> __Overlay.VtArray_Sequence_Iterator<Self> {
         .init(begin: __beginUnsafe(), end: __endUnsafe(), s: self)
     }
