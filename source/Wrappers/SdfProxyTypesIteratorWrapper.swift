@@ -22,20 +22,13 @@ import Foundation
 
 
 extension __Overlay {
-    public protocol SdfProxyTypesSequenceProtocol: Sequence {}
-    //    where Iterator: SdfProxyTypesIteratorProtocol, Iterator.RangeType == Self {}
+    public protocol SdfProxyTypesSequenceProtocol {}
 
-    public protocol SdfProxyTypesIteratorProtocol: IteratorProtocol {
+    public protocol SdfProxyTypesIteratorProtocol: IteratorProtocol where Element == value_type {
         associatedtype value_type
-        associatedtype RangeType: SdfProxyTypesSequenceProtocol where RangeType.Iterator == Self
+        associatedtype RangeType: SdfProxyTypesSequenceProtocol
         mutating func advanceAndGetCurrent(_ resultIsValid: UnsafeMutablePointer<Bool>) -> value_type
         init(_ range: RangeType)
-    }
-}
-
-extension __Overlay.SdfProxyTypesSequenceProtocol {
-    public func makeIterator() -> Iterator where Iterator: __Overlay.SdfProxyTypesIteratorProtocol, Iterator.RangeType == Self {
-        .init(self)
     }
 }
 
@@ -50,52 +43,70 @@ extension __Overlay.SdfProxyTypesIteratorProtocol {
 extension pxr.SdfNameOrderProxy: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfNameOrderProxyIteratorWrapper
 }
-extension __Overlay.SdfNameOrderProxyIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfNameOrderProxyIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfNameOrderProxy
+}
 
 
 extension pxr.SdfSubLayerProxy: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfSubLayerProxyIteratorWrapper
 }
-extension __Overlay.SdfSubLayerProxyIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfSubLayerProxyIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfSubLayerProxy
+}
 
 
 extension pxr.SdfAttributeSpecView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfAttributeSpecViewIteratorWrapper
 }
-extension __Overlay.SdfAttributeSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfAttributeSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfAttributeSpecView
+}
 
 
 extension pxr.SdfPrimSpecView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfPrimSpecViewIteratorWrapper
 }
-extension __Overlay.SdfPrimSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfPrimSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfPrimSpecView
+}
 
 
 extension pxr.SdfPropertySpecView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfPropertySpecViewIteratorWrapper
 }
-extension __Overlay.SdfPropertySpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfPropertySpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfPropertySpecView
+}
 
 
 extension pxr.SdfRelationalAttributeSpecView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfRelationalAttributeSpecViewIteratorWrapper
 }
-extension __Overlay.SdfRelationalAttributeSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfRelationalAttributeSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfRelationalAttributeSpecView
+}
 
 
 extension pxr.SdfRelationshipSpecView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfRelationshipSpecViewIteratorWrapper
 }
-extension __Overlay.SdfRelationshipSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfRelationshipSpecViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfRelationshipSpecView
+}
 
 
 extension pxr.SdfVariantView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfVariantViewIteratorWrapper
 }
-extension __Overlay.SdfVariantViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfVariantViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfVariantView
+}
 
 
 extension pxr.SdfVariantSetView: __Overlay.SdfProxyTypesSequenceProtocol {
     public typealias Iterator = __Overlay.SdfVariantSetViewIteratorWrapper
 }
-extension __Overlay.SdfVariantSetViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {}
+extension __Overlay.SdfVariantSetViewIteratorWrapper: __Overlay.SdfProxyTypesIteratorProtocol {
+    public typealias RangeType = pxr.SdfVariantSetView
+}
