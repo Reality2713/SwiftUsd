@@ -82,6 +82,10 @@ if '.unsafeFlags(["-Xcc", "-fcxx-modules"])' not in package_manifest_text:
     fail("Package.swift must pass -fcxx-modules through Swift settings for Xcode explicit module scanning")
 if '.unsafeFlags(["-Xcc", "-fcxx-modules"])' not in package_template_text:
     fail("Package.swift.in must preserve -fcxx-modules when Package.swift is regenerated")
+if 'cxxSettings: [\n                    .unsafeFlags(["-fcxx-modules"])' not in package_manifest_text:
+    fail("_OpenUSD_SwiftBindingHelpers target must pass -fcxx-modules through C++ settings")
+if 'cxxSettings: [\n                    .unsafeFlags(["-fcxx-modules"])' not in package_template_text:
+    fail("Package.swift.in must preserve _OpenUSD_SwiftBindingHelpers -fcxx-modules C++ settings")
 if '"-Xswiftc", "-Xcc", "-Xswiftc", "-fcxx-modules"' not in modulemap_generator_text:
     fail("make-swift-package extraArgs must preserve -fcxx-modules for regenerated CLI package settings")
 
@@ -138,8 +142,12 @@ if "CxxDictionary" in conformances or "CxxSequence" in conformances:
         "CxxDictionary's Element/Key equality requirements"
     )
 
-if "public protocol OpenUSD_Sequence: Sequence\n        where Element == value_type, Iterator == __Overlay.OpenUSD_Iterator<Self>" not in sequence_text:
-    fail("OpenUSD_Sequence must pin Element and Iterator to the Swift overlay iterator")
+if "public protocol OpenUSD_Sequence: Sequence" in sequence_text:
+    fail("OpenUSD_Sequence must not inherit Swift Sequence under Swift 6.3.2 C++ interop")
+if "public struct OpenUSDSequence<S: __Overlay.OpenUSD_Sequence>: Sequence" not in sequence_text:
+    fail("OpenUSD ranges must expose explicit Swift wrapper sequences")
+if "extension pxr.SdfZipFile: Sequence" in read(repo_root / "source/Wrappers/SdfZipFileIteratorWrapper.swift"):
+    fail("SdfZipFile must expose explicit swiftSequence instead of direct Swift Sequence conformance")
 if "public protocol VtArray_CustomStringConvertible: CustomStringConvertible, Sequence" in vt_array_protocol_text:
     fail("VtArray description must not require broad Swift Sequence conformance")
 if "public protocol VtArray_Sequence: Sequence" in vt_array_protocol_text:

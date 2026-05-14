@@ -62,7 +62,10 @@ let package = Package(
                 
         .target(name: "_OpenUSD_SwiftBindingHelpers",
                 dependencies: cppTarget_dependencies(),
-                path: "swift-package/Sources/_OpenUSD_SwiftBindingHelpers"),
+                path: "swift-package/Sources/_OpenUSD_SwiftBindingHelpers",
+                cxxSettings: [
+                    .unsafeFlags(["-fcxx-modules"])
+                ]),
 
         .executableTarget(
             name: "OpenUSDValidationCatalogTool",

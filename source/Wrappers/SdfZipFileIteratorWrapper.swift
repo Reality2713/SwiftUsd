@@ -30,12 +30,23 @@ extension pxr.SdfZipFile {
     }        
 }
 
-extension pxr.SdfZipFile: Sequence {
-    public typealias Iterator = Overlay.SdfZipFileIteratorWrapper
-    public typealias Element = Overlay.SdfZipFileIteratorWrapper
-    
-    public func makeIterator() -> Overlay.SdfZipFileIteratorWrapper {
-        __Overlay.SdfZipFileIteratorWrapper(self, self.__beginUnsafe())
+extension pxr.SdfZipFile {
+    public var swiftSequence: Overlay.SdfZipFileSequence {
+        .init(self)
+    }
+}
+
+extension Overlay {
+    public struct SdfZipFileSequence: Sequence {
+        let zipFile: pxr.SdfZipFile
+
+        init(_ zipFile: pxr.SdfZipFile) {
+            self.zipFile = zipFile
+        }
+
+        public func makeIterator() -> Overlay.SdfZipFileIteratorWrapper {
+            __Overlay.SdfZipFileIteratorWrapper(zipFile, zipFile.__beginUnsafe())
+        }
     }
 }
 

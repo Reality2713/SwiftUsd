@@ -23,10 +23,24 @@ import CxxStdlib
 
 
 extension __Overlay {
+    public struct OpenUSDSequence<S: __Overlay.OpenUSD_Sequence>: Sequence {
+        let base: S
+
+        init(_ base: S) {
+            self.base = base
+        }
+
+        public func makeIterator() -> __Overlay.OpenUSD_Iterator<S> {
+            .init(begin: base.__beginUnsafe(), end: base.__endUnsafe(), s: base)
+        }
+    }
+
     public struct OpenUSD_Iterator<S: __Overlay.OpenUSD_Sequence>: IteratorProtocol {
+        public typealias Element = S.value_type
+
         var begin: S.const_iterator
         var end: S.const_iterator
-        var s: S // hold the Sequence alive as long as there's an iterator to it
+        var s: S // hold the range alive as long as there's an iterator to it
 
         init(begin: S.const_iterator, end: S.const_iterator, s: S) {
             self.begin = begin
@@ -54,8 +68,7 @@ extension __Overlay {
 }
 
 extension __Overlay {
-    public protocol OpenUSD_Sequence: Sequence
-        where Element == value_type, Iterator == __Overlay.OpenUSD_Iterator<Self> {
+    public protocol OpenUSD_Sequence {
         associatedtype value_type
         associatedtype const_iterator: OpenUSD_Sequence_const_iterator where const_iterator.value_type == value_type
         func __beginUnsafe() -> const_iterator
@@ -63,8 +76,8 @@ extension __Overlay {
     }
 }
 extension __Overlay.OpenUSD_Sequence {
-    public func makeIterator() -> __Overlay.OpenUSD_Iterator<Self> {
-        .init(begin: __beginUnsafe(), end: __endUnsafe(), s: self)
+    public var swiftSequence: __Overlay.OpenUSDSequence<Self> {
+        .init(self)
     }
 }
 
