@@ -72,7 +72,7 @@ public:
     /// Returns the asset path to the root layer of the referenced layer
     /// stack.  This will be empty in the case of an internal reference.
     ///
-    const std::string &GetAssetPath() const {
+    const std::string &GetAssetPath() const SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _assetPath;
     }
 
@@ -91,7 +91,7 @@ public:
     /// This will be empty if the referenced prim is the default prim specified
     /// in the referenced layer stack.
     ///
-    const SdfPath &GetPrimPath() const {
+    const SdfPath &GetPrimPath() const SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _primPath;
     }
 
@@ -105,7 +105,7 @@ public:
 
     /// Returns the layer offset associated with the reference.
     ///
-    const SdfLayerOffset &GetLayerOffset() const {
+    const SdfLayerOffset &GetLayerOffset() const SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _layerOffset;
     }
 
