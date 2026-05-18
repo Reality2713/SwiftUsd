@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <exception>
 #include <mutex>
 #include <sstream>
 #include <string_view>
@@ -548,11 +549,17 @@ bool Overlay::UsdValidationWrapper::IsRegistryExecutionAvailable() {
 
 std::string Overlay::UsdValidationWrapper::GetAllValidatorMetadataJSON() {
 #if SWIFTUSD_HAS_USDVALIDATION_REGISTRY
-    pxr::TfErrorMark errorMark;
-    _EnsureValidationRegistryLoaded();
-    return _SerializeMetadata(
-        pxr::UsdValidationRegistry::GetInstance().GetAllValidatorMetadata()
-    );
+    try {
+        pxr::TfErrorMark errorMark;
+        _EnsureValidationRegistryLoaded();
+        return _SerializeMetadata(
+            pxr::UsdValidationRegistry::GetInstance().GetAllValidatorMetadata()
+        );
+    } catch (const std::exception &exception) {
+        return _SerializeBridgeIssue(exception.what());
+    } catch (...) {
+        return _SerializeBridgeIssue("OpenUSD validation metadata threw an unknown C++ exception.");
+    }
 #else
     return "[]";
 #endif
@@ -562,13 +569,19 @@ std::string Overlay::UsdValidationWrapper::GetValidatorMetadataForKeywordsJSON(
     const Overlay::String_Vector &keywords
 ) {
 #if SWIFTUSD_HAS_USDVALIDATION_REGISTRY
-    pxr::TfErrorMark errorMark;
-    _EnsureValidationRegistryLoaded();
-    return _SerializeMetadata(
-        pxr::UsdValidationRegistry::GetInstance().GetValidatorMetadataForKeywords(
-            _ToTfTokenVector(keywords)
-        )
-    );
+    try {
+        pxr::TfErrorMark errorMark;
+        _EnsureValidationRegistryLoaded();
+        return _SerializeMetadata(
+            pxr::UsdValidationRegistry::GetInstance().GetValidatorMetadataForKeywords(
+                _ToTfTokenVector(keywords)
+            )
+        );
+    } catch (const std::exception &exception) {
+        return _SerializeBridgeIssue(exception.what());
+    } catch (...) {
+        return _SerializeBridgeIssue("OpenUSD validation metadata threw an unknown C++ exception.");
+    }
 #else
     return "[]";
 #endif
@@ -576,11 +589,17 @@ std::string Overlay::UsdValidationWrapper::GetValidatorMetadataForKeywordsJSON(
 
 std::string Overlay::UsdValidationWrapper::GetAllValidatorRuleCandidatesJSON() {
 #if SWIFTUSD_HAS_USDVALIDATION_REGISTRY
-    pxr::TfErrorMark errorMark;
-    _EnsureValidationRegistryLoaded();
-    return _SerializeRuleCandidates(
-        pxr::UsdValidationRegistry::GetInstance().GetOrLoadAllValidators()
-    );
+    try {
+        pxr::TfErrorMark errorMark;
+        _EnsureValidationRegistryLoaded();
+        return _SerializeRuleCandidates(
+            pxr::UsdValidationRegistry::GetInstance().GetOrLoadAllValidators()
+        );
+    } catch (const std::exception &exception) {
+        return _SerializeBridgeIssue(exception.what());
+    } catch (...) {
+        return _SerializeBridgeIssue("OpenUSD validation rule discovery threw an unknown C++ exception.");
+    }
 #else
     return "[]";
 #endif
@@ -595,10 +614,16 @@ std::string Overlay::UsdValidationWrapper::ValidateStageJSON(
         return _SerializeBridgeIssue("UsdStage pointer was null.");
     }
 
-    pxr::TfErrorMark errorMark;
-    _EnsureValidationRegistryLoaded();
-    pxr::UsdValidationContext context(_ToTfTokenVector(keywords));
-    return _SerializeErrors(context.Validate(stage), errorMark);
+    try {
+        pxr::TfErrorMark errorMark;
+        _EnsureValidationRegistryLoaded();
+        pxr::UsdValidationContext context(_ToTfTokenVector(keywords));
+        return _SerializeErrors(context.Validate(stage), errorMark);
+    } catch (const std::exception &exception) {
+        return _SerializeBridgeIssue(exception.what());
+    } catch (...) {
+        return _SerializeBridgeIssue("OpenUSD stage validation threw an unknown C++ exception.");
+    }
 #else
     return _SerializeBridgeIssue(
         "UsdValidationRegistry execution is unavailable in this SwiftUsd build."
