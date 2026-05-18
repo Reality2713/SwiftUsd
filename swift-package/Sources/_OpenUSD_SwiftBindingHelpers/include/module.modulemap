@@ -1659,6 +1659,7 @@ module _OpenUSD_SwiftBindingHelpers {
     header "swiftUsd/Wrappers/UsdImagingGLEngineWrapper.h"
     header "swiftUsd/Wrappers/UsdPrimRangeIteratorWrapper.h"
     header "swiftUsd/Wrappers/UsdPrimTypeInfoWrapper.h"
+    header "swiftUsd/Wrappers/UsdShadeMaterialBindingWrapper.h"
     header "swiftUsd/Wrappers/UsdValidationWrapper.h"
     header "swiftUsd/Wrappers/VtDictionaryConstIteratorWrapper.h"
 }
