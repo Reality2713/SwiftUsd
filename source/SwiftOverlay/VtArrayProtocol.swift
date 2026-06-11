@@ -137,63 +137,288 @@ extension __Overlay {
     }
 }
 
-extension pxr.VtBoolArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtDoubleArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtFloatArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtHalfArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtBoolArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = Bool
+    public typealias ArrayLiteralElement = Bool
+}
+extension pxr.VtDoubleArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = Double
+    public typealias ArrayLiteralElement = Double
+}
+extension pxr.VtFloatArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = Float
+    public typealias ArrayLiteralElement = Float
+}
+extension pxr.VtHalfArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfHalf
+    public typealias ArrayLiteralElement = pxr.GfHalf
+}
 
-extension pxr.VtCharArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtUCharArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtShortArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtUShortArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtIntArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtUIntArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtInt64Array: __Overlay.VtArrayProtocol {}
-extension pxr.VtUInt64Array: __Overlay.VtArrayProtocol {}
+extension pxr.VtCharArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = CChar
+    public typealias ArrayLiteralElement = CChar
+}
+extension pxr.VtUCharArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = UInt8
+    public typealias ArrayLiteralElement = UInt8
+}
+extension pxr.VtShortArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = Int16
+    public typealias ArrayLiteralElement = Int16
+}
+extension pxr.VtUShortArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = UInt16
+    public typealias ArrayLiteralElement = UInt16
+}
+extension pxr.VtIntArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = Int32
+    public typealias ArrayLiteralElement = Int32
+}
+extension pxr.VtUIntArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = UInt32
+    public typealias ArrayLiteralElement = UInt32
+}
+extension pxr.VtInt64Array: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = Int64
+    public typealias ArrayLiteralElement = Int64
+}
+extension pxr.VtUInt64Array: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = UInt64
+    public typealias ArrayLiteralElement = UInt64
+}
 
-extension pxr.VtVec4iArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec3iArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec2iArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtVec4iArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec4i
+    public typealias ArrayLiteralElement = pxr.GfVec4i
+}
+extension pxr.VtVec3iArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec3i
+    public typealias ArrayLiteralElement = pxr.GfVec3i
+}
+extension pxr.VtVec2iArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec2i
+    public typealias ArrayLiteralElement = pxr.GfVec2i
+}
 
-extension pxr.VtVec4hArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec3hArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec2hArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtVec4hArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec4h
+    public typealias ArrayLiteralElement = pxr.GfVec4h
+}
+extension pxr.VtVec3hArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec3h
+    public typealias ArrayLiteralElement = pxr.GfVec3h
+}
+extension pxr.VtVec2hArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec2h
+    public typealias ArrayLiteralElement = pxr.GfVec2h
+}
 
-extension pxr.VtVec4fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec3fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec2fArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtVec4fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec4f
+    public typealias ArrayLiteralElement = pxr.GfVec4f
+}
+extension pxr.VtVec3fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec3f
+    public typealias ArrayLiteralElement = pxr.GfVec3f
+}
+extension pxr.VtVec2fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec2f
+    public typealias ArrayLiteralElement = pxr.GfVec2f
+}
 
-extension pxr.VtVec4dArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec3dArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtVec2dArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtVec4dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec4d
+    public typealias ArrayLiteralElement = pxr.GfVec4d
+}
+extension pxr.VtVec3dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec3d
+    public typealias ArrayLiteralElement = pxr.GfVec3d
+}
+extension pxr.VtVec2dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfVec2d
+    public typealias ArrayLiteralElement = pxr.GfVec2d
+}
 
-extension pxr.VtMatrix4fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtMatrix3fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtMatrix2fArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtMatrix4fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfMatrix4f
+    public typealias ArrayLiteralElement = pxr.GfMatrix4f
+}
+extension pxr.VtMatrix3fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfMatrix3f
+    public typealias ArrayLiteralElement = pxr.GfMatrix3f
+}
+extension pxr.VtMatrix2fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfMatrix2f
+    public typealias ArrayLiteralElement = pxr.GfMatrix2f
+}
 
-extension pxr.VtMatrix4dArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtMatrix3dArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtMatrix2dArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtMatrix4dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfMatrix4d
+    public typealias ArrayLiteralElement = pxr.GfMatrix4d
+}
+extension pxr.VtMatrix3dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfMatrix3d
+    public typealias ArrayLiteralElement = pxr.GfMatrix3d
+}
+extension pxr.VtMatrix2dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfMatrix2d
+    public typealias ArrayLiteralElement = pxr.GfMatrix2d
+}
 
-extension pxr.VtRange3fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtRange3dArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtRange2fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtRange2dArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtRange1fArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtRange1dArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtRange3fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRange3f
+    public typealias ArrayLiteralElement = pxr.GfRange3f
+}
+extension pxr.VtRange3dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRange3d
+    public typealias ArrayLiteralElement = pxr.GfRange3d
+}
+extension pxr.VtRange2fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRange2f
+    public typealias ArrayLiteralElement = pxr.GfRange2f
+}
+extension pxr.VtRange2dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRange2d
+    public typealias ArrayLiteralElement = pxr.GfRange2d
+}
+extension pxr.VtRange1fArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRange1f
+    public typealias ArrayLiteralElement = pxr.GfRange1f
+}
+extension pxr.VtRange1dArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRange1d
+    public typealias ArrayLiteralElement = pxr.GfRange1d
+}
 
-extension pxr.VtIntervalArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtRect2iArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtIntervalArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfInterval
+    public typealias ArrayLiteralElement = pxr.GfInterval
+}
+extension pxr.VtRect2iArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfRect2i
+    public typealias ArrayLiteralElement = pxr.GfRect2i
+}
 
 // VtStringArray gains Codable conformance in Codable.swift,
 // but it can't satisfy the requirements that ElementType is Codable
 // because std.string isn't Codable
-extension pxr.VtStringArray: __Overlay.VtArray_WithoutCodableProtocol {}
-extension pxr.VtTokenArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtStringArray: __Overlay.VtArray_WithoutCodableProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = std.string
+    public typealias ArrayLiteralElement = std.string
+}
+extension pxr.VtTokenArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.TfToken
+    public typealias ArrayLiteralElement = pxr.TfToken
+}
 
-extension pxr.VtQuathArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtQuatfArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtQuatdArray: __Overlay.VtArrayProtocol {}
-extension pxr.VtQuaternionArray: __Overlay.VtArrayProtocol {}
+extension pxr.VtQuathArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfQuath
+    public typealias ArrayLiteralElement = pxr.GfQuath
+}
+extension pxr.VtQuatfArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfQuatf
+    public typealias ArrayLiteralElement = pxr.GfQuatf
+}
+extension pxr.VtQuatdArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfQuatd
+    public typealias ArrayLiteralElement = pxr.GfQuatd
+}
+extension pxr.VtQuaternionArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.GfQuaternion
+    public typealias ArrayLiteralElement = pxr.GfQuaternion
+}
 
-extension Overlay.SdfAssetPath_VtArray: __Overlay.VtArrayProtocol {}
+extension Overlay.SdfAssetPath_VtArray: __Overlay.VtArrayProtocol {
+    // Explicit witnesses: the Swift 6.4 interface printer corrupts
+    // inferred associated-type witnesses for C++ specializations.
+    public typealias ElementType = pxr.SdfAssetPath
+    public typealias ArrayLiteralElement = pxr.SdfAssetPath
+}
