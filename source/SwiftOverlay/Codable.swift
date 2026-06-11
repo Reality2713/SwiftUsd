@@ -1422,9 +1422,11 @@ extension pxr.SdfAssetPath: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = try encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(String(self.GetAuthoredPath() as std.string), forKey: .authoredPath)
-        try container.encode(String(self.GetEvaluatedPath() as std.string), forKey: .evaluatedPath)
-        try container.encode(String(self.GetResolvedPath() as std.string), forKey: .resolvedPath)
+        // Swift 6.4 imports the SWIFT_RETURNS_INDEPENDENT_VALUE const& getters
+        // as UnsafePointer projections; dereference to copy.
+        try container.encode(String(self.GetAuthoredPath().pointee), forKey: .authoredPath)
+        try container.encode(String(self.GetEvaluatedPath().pointee), forKey: .evaluatedPath)
+        try container.encode(String(self.GetResolvedPath().pointee), forKey: .resolvedPath)
     }
 }
 

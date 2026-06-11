@@ -1,3 +1,4 @@
+import CxxStdlib
 import Foundation
 import _OpenUSD_SwiftBindingHelpers
 
@@ -56,18 +57,25 @@ let entries = rawEntries.map {
     )
 }
 
+// Hoisted sub-expressions: the single literal form exceeds the Swift 6.4
+// type-checker's expression budget ("unable to type-check in reasonable time").
+let baseline: [String: String] = [
+    "openUSD": "26.03",
+    "swiftUsd": "6.0.0",
+]
+let fixerBackedValidatorCount: Int = entries.filter { !$0.fixers.isEmpty }.count
+let candidateRuleIdentifierCount: Int = entries.reduce(0) { $0 + $1.candidateRuleIdentifiers.count }
+let summary = ValidationCatalogPayload.Summary(
+    validatorCount: entries.count,
+    fixerBackedValidatorCount: fixerBackedValidatorCount,
+    candidateRuleIdentifierCount: candidateRuleIdentifierCount
+)
+let sortedEntries: [ValidationCatalogPayload.Entry] = entries.sorted { $0.validatorName < $1.validatorName }
 let payload = ValidationCatalogPayload(
     generatedFrom: "SwiftUsd usdValidation registry and validator fixers",
-    baseline: [
-        "openUSD": "26.03",
-        "swiftUsd": "6.0.0",
-    ],
-    summary: .init(
-        validatorCount: entries.count,
-        fixerBackedValidatorCount: entries.filter { !$0.fixers.isEmpty }.count,
-        candidateRuleIdentifierCount: entries.reduce(0) { $0 + $1.candidateRuleIdentifiers.count }
-    ),
-    entries: entries.sorted { $0.validatorName < $1.validatorName }
+    baseline: baseline,
+    summary: summary,
+    entries: sortedEntries
 )
 
 let encoder = JSONEncoder()

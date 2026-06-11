@@ -67,7 +67,7 @@ extension pxr.SdfPath {
 extension String {
     /// Uses `path.GetAssetPath()`. To use a different accessor, call that accessor explicitly
     public init(_ path: pxr.SdfAssetPath) {
-        self.init(path.GetAssetPath())
+        self.init(path.GetAssetPath().pointee)
     }
 }
 extension pxr.SdfAssetPath {

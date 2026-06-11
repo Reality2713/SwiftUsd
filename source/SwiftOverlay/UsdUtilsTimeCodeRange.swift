@@ -31,6 +31,11 @@ extension pxr.UsdUtilsTimeCodeRange.const_iterator: UnsafeCxxInputIterator {
     }
     
     public typealias Pointee = value_type
+    // Swift 6.4 adds these requirements to UnsafeCxxInputIterator.
+    public typealias DereferenceResult = value_type
+    public func __operatorStar() -> value_type {
+        __Overlay.UsdUtilsTimeCodeRange_const_iterator__operatorStar(self)
+    }
 }
 extension pxr.UsdUtilsTimeCodeRange: Codable {
     public func encode(to encoder: any Encoder) throws {

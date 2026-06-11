@@ -172,7 +172,7 @@ public:
 
     /// Returns the asset path as it was authored in the original layer.  When
     /// authoring scene description, this value is used for serialization.
-    const std::string &GetAuthoredPath() const & {
+    const std::string &GetAuthoredPath() const & SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _authoredPath;
     }
 
@@ -189,7 +189,7 @@ public:
     /// Note that SdfAssetPath carries an evaluated path only if its creator
     /// passed one to the constructor.  SdfAssetPath never performs variable
     /// expression evaluation itself.
-    const std::string &GetEvaluatedPath() const & {
+    const std::string &GetEvaluatedPath() const & SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _evaluatedPath;
     }
 
@@ -202,7 +202,7 @@ public:
     /// be returned, otherwise the raw, authored path is returned.
     /// The value this function returns is the exact input that is passed to
     /// asset resolution.
-    const std::string &GetAssetPath() const & {
+    const std::string &GetAssetPath() const & SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _evaluatedPath.empty() ? _authoredPath : _evaluatedPath;
     }
 
@@ -218,7 +218,7 @@ public:
     /// Note that SdfAssetPath carries a resolved path only if its creator
     /// passed one to the constructor.  SdfAssetPath never performs resolution
     /// itself.
-    const std::string &GetResolvedPath() const & {
+    const std::string &GetResolvedPath() const & SWIFT_RETURNS_INDEPENDENT_VALUE {
         return _resolvedPath;
     }
 
