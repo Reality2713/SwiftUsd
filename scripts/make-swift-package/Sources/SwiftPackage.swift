@@ -425,7 +425,12 @@ struct SwiftPackage {
                 destParent = fsInfo.swiftUsdPackage.sources_OpenUSD_SwiftBindingHelpers
             case let x where x.hasSuffix(".swift") || x.hasSuffix(".metal") || x.hasSuffix(".usdz"):
                 let sourceMacroImplementations = fsInfo.swiftUsdPackage.repoSource.appending(path: fsInfo.swiftUsdPackage.sources_OpenUSD_MacroImplementations.lastPathComponent)
-                if fileURL.path(percentEncoded: false).starts(with: sourceMacroImplementations.path(percentEncoded: false)) {
+                let validationCatalogTool = fsInfo.swiftUsdPackage.repoSource.appending(path: "OpenUSDValidationCatalogTool")
+                if fileURL.path(percentEncoded: false).starts(with: validationCatalogTool.path(percentEncoded: false)) {
+                    destParent = fsInfo.swiftUsdPackage.sourcesOpenUSD
+                        .deletingLastPathComponent()
+                        .appending(path: "OpenUSDValidationCatalogTool")
+                } else if fileURL.path(percentEncoded: false).starts(with: sourceMacroImplementations.path(percentEncoded: false)) {
                     destParent = fsInfo.swiftUsdPackage.sources_OpenUSD_MacroImplementations
                 } else {
                     destParent = fsInfo.swiftUsdPackage.sourcesOpenUSD

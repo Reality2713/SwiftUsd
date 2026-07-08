@@ -31,6 +31,9 @@ let package = Package(
         .library(name: "OpenUSD", targets: [
             "_OpenUSD_SwiftBindingHelpers",
             "OpenUSD"
+        ]),
+        .executable(name: "OpenUSDValidationCatalogTool", targets: [
+            "OpenUSDValidationCatalogTool"
         ])
     ],
     dependencies: [
@@ -60,6 +63,15 @@ let package = Package(
                 dependencies: cppTarget_dependencies(),
                 path: "${generated-package-prefix}Sources/_OpenUSD_SwiftBindingHelpers",
                 cxxSettings: conditionalCxxSettings()),
+
+        .executableTarget(
+            name: "OpenUSDValidationCatalogTool",
+            dependencies: ["_OpenUSD_SwiftBindingHelpers"],
+            path: "${generated-package-prefix}Sources/OpenUSDValidationCatalogTool",
+            swiftSettings: [
+                .interoperabilityMode(.Cxx)
+            ]
+        ),
                 
     ] + xcframeworkBinaryTargets(),
     cxxLanguageStandard: .gnucxx17
