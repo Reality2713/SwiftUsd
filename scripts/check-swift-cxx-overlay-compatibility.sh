@@ -84,7 +84,8 @@ if "fcxx-modules" in modulemap_generator_text:
     fail("make-swift-package extraArgs must not emit -fcxx-modules unsafe flags")
 
 dictionary_protocol = re.search(
-    r"public protocol CxxDictionary\b(?P<body>.*?)(?=\nextension Cxx\.CxxDictionary\b)",
+    r"public protocol CxxDictionary\b(?P<body>.*?)"
+    r"(?=\nextension Cxx(?:::|\.)CxxDictionary\b)",
     cxx_text,
     re.S,
 )
