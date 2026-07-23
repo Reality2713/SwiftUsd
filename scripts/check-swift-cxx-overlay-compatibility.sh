@@ -21,6 +21,7 @@ sdf_proxy_types_iterator = repo_root / "source/Wrappers/SdfProxyTypesIteratorWra
 vt_header = repo_root / "source/SwiftOverlay/VtDictionary.h"
 vt_impl = repo_root / "source/SwiftOverlay/VtDictionary.cpp"
 generated_modulemap = repo_root / "swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/module.modulemap"
+generated_equatable = repo_root / "source/generated/Equatable.swift"
 modulemap_generator = repo_root / "scripts/make-swift-package/Sources/SwiftPackage.swift"
 package_manifest = repo_root / "Package.swift"
 package_template = repo_root / "source/Package.swift.in"
@@ -56,6 +57,7 @@ sdf_proxy_types_iterator_text = read(sdf_proxy_types_iterator)
 header_text = read(vt_header)
 impl_text = read(vt_impl)
 modulemap_text = read(generated_modulemap)
+generated_equatable_text = read(generated_equatable)
 modulemap_generator_text = read(modulemap_generator)
 package_manifest_text = read(package_manifest)
 package_template_text = read(package_template)
@@ -82,6 +84,30 @@ if "fcxx-modules" in package_manifest_text or "fcxx-modules" in package_template
     fail("SwiftUsd package targets must not use -fcxx-modules unsafe flags; unsafe flags make OpenUSD unusable as a dependency product")
 if "fcxx-modules" in modulemap_generator_text:
     fail("make-swift-package extraArgs must not emit -fcxx-modules unsafe flags")
+swift_syntax_pin = '.package(url: "https://github.com/swiftlang/swift-syntax.git", exact: "603.0.0")'
+if swift_syntax_pin not in package_manifest_text or swift_syntax_pin not in package_template_text:
+    fail(
+        "SwiftSyntax must be pinned exactly to 603.0.0 in both Package.swift and "
+        "source/Package.swift.in so clean release hosts cannot resolve different compiler libraries"
+    )
+
+unsupported_retroactive_equatable_types = [
+    "pxr.VtDictionary.iterator",
+    "pxr.VtDictionary.const_iterator",
+    "pxr.PcpNodeReverseIterator",
+    "pxr.PcpPrimReverseIterator",
+    "pxr.PcpPropertyReverseIterator",
+]
+invalid_equatable_extensions = [
+    type_name
+    for type_name in unsupported_retroactive_equatable_types
+    if f"extension {type_name}: Equatable" in generated_equatable_text
+]
+if invalid_equatable_extensions:
+    fail(
+        "Xcode 27 cannot add retroactive Equatable conformances to imported C++ "
+        "iterator specializations: " + ", ".join(invalid_equatable_extensions)
+    )
 
 dictionary_protocol = re.search(
     r"public protocol CxxDictionary\b(?P<body>.*?)"

@@ -901,16 +901,6 @@ extension pxr.HdAovSettingsMap: Equatable { // classTemplateSpecialization
     }
 }
 #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
-extension pxr.VtDictionary.iterator: Equatable { // classTemplateSpecialization
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        __Overlay.operatorEqualsEquals(lhs, rhs)
-    }
-}
-extension pxr.VtDictionary.const_iterator: Equatable { // classTemplateSpecialization
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        __Overlay.operatorEqualsEquals(lhs, rhs)
-    }
-}
 extension pxr.VtValue: Equatable {} // foundBySwift
 extension pxr.VtValueRef: Equatable {} // foundBySwift
 extension pxr.VtMutableValueRef: Equatable { // differentArgumentTypes
@@ -1235,23 +1225,8 @@ extension pxr.PcpLayerStackIdentifier: Equatable {} // foundBySwift
 extension pxr.PcpExpressionVariablesSource: Equatable {} // foundBySwift
 extension pxr.PcpDependency: Equatable {} // foundBySwift
 extension pxr.PcpNodeIterator: Equatable {} // foundBySwift
-extension pxr.PcpNodeReverseIterator: Equatable { // differentArgumentTypes
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        __Overlay.operatorEqualsEquals(lhs, rhs)
-    }
-}
 extension pxr.PcpPrimIterator: Equatable {} // foundBySwift
-extension pxr.PcpPrimReverseIterator: Equatable { // differentArgumentTypes
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        __Overlay.operatorEqualsEquals(lhs, rhs)
-    }
-}
 extension pxr.PcpPropertyIterator: Equatable {} // foundBySwift
-extension pxr.PcpPropertyReverseIterator: Equatable { // differentArgumentTypes
-    public static func ==(lhs: Self, rhs: Self) -> Bool {
-        __Overlay.operatorEqualsEquals(lhs, rhs)
-    }
-}
 extension pxr.PcpExpressionVariables: Equatable {} // foundBySwift
 extension pxr.PcpInstanceKey: Equatable {} // foundBySwift
 extension pxr.PcpLayerStack: Equatable { // importedAsReference
