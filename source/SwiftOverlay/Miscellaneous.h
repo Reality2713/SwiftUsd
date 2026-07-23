@@ -29,6 +29,10 @@
 #include "pxr/base/vt/array.h"
 #include "pxr/usd/usdGeom/xformOp.h"
 #include "pxr/usd/sdf/path.h"
+#include "pxr/usd/sdf/payload.h"
+#include "pxr/usd/sdf/valueTypeName.h"
+#include "pxr/usd/sdr/registry.h"
+#include "pxr/usd/sdr/shaderProperty.h"
 #include "pxr/usd/sdf/layerStateDelegate.h"
 #include "pxr/usd/usd/notice.h"
 
@@ -36,6 +40,14 @@ namespace SwiftUsd {}
 
 namespace Overlay {
     extern const std::function<bool (const pxr::TfToken& propertyName)> DefaultPropertyPredicateFunc;
+
+    std::string SdfPathName(const pxr::SdfPath& path);
+    std::string SdfPayloadAssetPath(const pxr::SdfPayload& payload);
+    bool SdrShaderInputSdfType(
+        const pxr::TfToken& shaderIdentifier,
+        const pxr::TfToken& inputName,
+        pxr::SdfValueTypeName* result
+    );
 }
 
 namespace __Overlay {

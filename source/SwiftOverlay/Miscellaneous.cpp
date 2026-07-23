@@ -22,6 +22,35 @@
 
 const std::function<bool (const pxr::TfToken& propertyName)> Overlay::DefaultPropertyPredicateFunc = {};
 
+std::string Overlay::SdfPathName(const pxr::SdfPath& path) {
+    return path.GetName();
+}
+
+std::string Overlay::SdfPayloadAssetPath(const pxr::SdfPayload& payload) {
+    return payload.GetAssetPath();
+}
+
+bool Overlay::SdrShaderInputSdfType(
+    const pxr::TfToken& shaderIdentifier,
+    const pxr::TfToken& inputName,
+    pxr::SdfValueTypeName* result
+) {
+    if (!result) {
+        return false;
+    }
+    const auto node =
+        pxr::SdrRegistry::GetInstance().GetShaderNodeByIdentifier(shaderIdentifier);
+    if (!node) {
+        return false;
+    }
+    const auto property = node->GetShaderInput(inputName);
+    if (!property) {
+        return false;
+    }
+    *result = property->GetTypeAsSdfType().GetSdfType();
+    return true;
+}
+
 
 // Workaround for rdar://124105392 (UsdMetadataValueMap subscript getter is mutating (5.10 regression))
 pxr::VtValue __Overlay::operatorSubscript(const pxr::UsdMetadataValueMap& m, const pxr::TfToken& x, bool* isValid) {
