@@ -44,8 +44,32 @@ struct XCFramework {
         
         var frameworkArguments = [any ShellUtil.Argument]()
         for framework in frameworks {
+            let debugSymbolsDir = xcframeworksDir
+                .appending(path: "DebugSymbols")
+                .appending(path: String(framework.fsInfo.usdInstall.index))
+            try! FileManager.default.createDirectory(
+                at: debugSymbolsDir,
+                withIntermediateDirectories: true
+            )
+            let debugSymbols = debugSymbolsDir.appending(
+                path: "\(framework.name).framework.dSYM"
+            )
+            if FileManager.default.directoryExists(at: debugSymbols) {
+                try! FileManager.default.removeItem(at: debugSymbols)
+            }
+
+            // Generate the dSYM after install_name_tool has finalized the
+            // framework binary so its UUID exactly matches the shipped slice.
+            // The OpenUSD build uses RelWithDebInfo; a Release-only input would
+            // produce an empty dSYM and is rejected by the release train gate.
+            try! await ShellUtil.runCommandAndWait(
+                arguments: ["dsymutil", framework.fsInfo.dylib, "-o", debugSymbols],
+                quiet: true
+            )
             frameworkArguments.append("-framework")
             frameworkArguments.append(framework.fsInfo.url)
+            frameworkArguments.append("-debug-symbols")
+            frameworkArguments.append(debugSymbols)
         }
         try! await ShellUtil.runCommandAndWait(arguments: ["xcodebuild", "-create-xcframework"] + frameworkArguments + ["-output", xcframeworkPath],
                                                quiet: true)
