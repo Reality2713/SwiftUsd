@@ -24,7 +24,7 @@ diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /
  
  @contextlib.contextmanager
  def CurrentWorkingDirectory(dir):
-@@ -1615,2 +1622,13 @@
+@@ -1615,2 +1622,16 @@
      with CurrentWorkingDirectory(DownloadURL(ALEMBIC_URL, context, force)):
 +        # Alembic 1.8.5 explicitly requests CMP0042 OLD, which current CMake
 +        # has removed. macOS has used the NEW install-name behavior since
