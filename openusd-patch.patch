@@ -32,11 +32,14 @@ diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /
 +        cmakeLists = "CMakeLists.txt"
 +        with open(cmakeLists, "r", encoding="utf-8") as source:
 +            contents = source.read()
-+        oldPolicy = "cmake_policy(SET CMP0042 OLD)"
-+        if oldPolicy not in contents:
++        oldPolicy = "CMAKE_POLICY(SET CMP0042 OLD)"
++        newPolicy = "CMAKE_POLICY(SET CMP0042 NEW)"
++        if oldPolicy in contents:
++            contents = contents.replace(oldPolicy, newPolicy, 1)
++        elif newPolicy not in contents:
 +            raise RuntimeError("Alembic CMP0042 compatibility anchor is missing")
 +        with open(cmakeLists, "w", encoding="utf-8") as destination:
-+            destination.write(contents.replace(oldPolicy, "cmake_policy(SET CMP0042 NEW)", 1))
++            destination.write(contents)
          cmakeOptions = ['-DUSE_BINARIES=OFF', '-DUSE_TESTS=OFF', '-DUSE_HDF5=OFF']
 @@ -2471,7 +2478,6 @@
                             not embedded and 
