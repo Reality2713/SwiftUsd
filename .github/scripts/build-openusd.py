@@ -27,8 +27,14 @@ from swiftusd_ci_common import *
 
 def install_cmake():
     if which("cmake"):
-        print("CMake is already on PATH, will not reinstall")
-        return
+        version_line = run(["cmake", "--version"], logOutput=False).output[0]
+        version_match = re.search(r"cmake version (\d+)\.(\d+)", version_line)
+        if version_match and int(version_match.group(1)) < 4:
+            print(f"Compatible {version_line} is already on PATH, will not reinstall")
+            return
+
+        print(f"{version_line} is incompatible with OpenUSD's legacy dependencies; "
+              "installing pinned CMake 3.28.6")
     else:
         print("Couldn't find CMake, will install")
 
@@ -57,7 +63,7 @@ def install_cmake():
     run(["hdiutil", "detach", "mnt"], cwd=Environment.Path.tmp_dir)
 
     env = os.environ.copy()
-    env["PATH"] += os.pathsep + f"{copy_dest}/CMake.app/Contents/bin"
+    env["PATH"] = f"{copy_dest}/CMake.app/Contents/bin" + os.pathsep + env["PATH"]
 
     print("Testing CMake is in PATH...")
     run(["which", "cmake"], env=env)
