@@ -39,6 +39,18 @@ diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /
 +                    'IMPORTED_LOCATION "${Tbb_${COMPONENT}_LIBRARY_RELEASE}"')])
 +
          extraArgs = [
+@@ -1399,4 +1412,11 @@
+         extraArgs.append('-DTBB_ROOT="{instDir}"'
+                          .format(instDir=context.instDir))
++        # Do not let Homebrew pkg-config replace the train-built TBB with a
++        # newer, API-incompatible one while configuring OpenVDB 10.
++        extraArgs.append('-DUSE_PKGCONFIG=OFF')
++        extraArgs.append('-DTbb_INCLUDE_DIR="{instDir}/include"'
++                         .format(instDir=context.instDir))
++        extraArgs.append('-DTBB_LIBRARYDIR="{instDir}/lib"'
++                         .format(instDir=context.instDir))
+         # OpenVDB needs Half type from IlmBase
+         extraArgs.append('-DILMBASE_ROOT="{instDir}"'
 @@ -1615,2 +1622,16 @@
      with CurrentWorkingDirectory(DownloadURL(ALEMBIC_URL, context, force)):
 +        # Alembic 1.8.5 explicitly requests CMP0042 OLD, which current CMake
