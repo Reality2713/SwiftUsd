@@ -24,6 +24,21 @@ diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /
  
  @contextlib.contextmanager
  def CurrentWorkingDirectory(dir):
+@@ -1383,7 +1390,13 @@
+         # build failure on Windows with Visual Studio 2022. This change already
+         # exists upstream in OpenVDB 11.0.0+.
+         PatchFile("openvdb/openvdb/tools/VelocityFields.h",
+                   [("BOOST_STATIC_ASSERT(OrderRK <= 4);",
+                     "static_assert(OrderRK <= 4);")])
+-
++        # OpenVDB 10 assigns CMake's optimized/debug selector list to the
++        # imported target's generic location, making Make seek `optimized`.
++        # Use the discovered release path; its explicit debug mapping remains.
++        PatchFile("cmake/FindTBB.cmake",
++                  [('IMPORTED_LOCATION "${Tbb_${COMPONENT}_LIBRARY}"',
++                    'IMPORTED_LOCATION "${Tbb_${COMPONENT}_LIBRARY_RELEASE}"')])
++
+         extraArgs = [
 @@ -1615,2 +1622,16 @@
      with CurrentWorkingDirectory(DownloadURL(ALEMBIC_URL, context, force)):
 +        # Alembic 1.8.5 explicitly requests CMP0042 OLD, which current CMake
