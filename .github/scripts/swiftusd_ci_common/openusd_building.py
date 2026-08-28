@@ -41,6 +41,7 @@ def get_openusd_build_flags(target):
     
     if target == "macOS":
         return debuggable_release + ["--embree", "--imageio", "--alembic", "--openvdb", "--no-python",
+                "--codesign-id=-",
                 "--ignore-homebrew", "--build-target", "native", openusd_build_dir("macOS"), file_prefix_map]
 
     if target == "iOS":
