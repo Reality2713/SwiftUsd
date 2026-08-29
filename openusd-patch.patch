@@ -847,6 +847,30 @@ diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /
 +    const std::string &GetResolvedPath() const & SWIFT_RETURNS_INDEPENDENT_VALUE {
          return _resolvedPath;
      }
+diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /Users/maddyadams/OpenUSD/pxr/usd/sdf/reference.h ./pxr/usd/sdf/reference.h
+--- /Users/maddyadams/OpenUSD/pxr/usd/sdf/reference.h	2026-01-07 16:15:59
++++ ./pxr/usd/sdf/reference.h	2026-08-29 07:35:00
+@@ -73,5 +73,5 @@
+     /// stack.  This will be empty in the case of an internal reference.
+     ///
+-    const std::string &GetAssetPath() const {
++    const std::string &GetAssetPath() const SWIFT_RETURNS_INDEPENDENT_VALUE {
+         return _assetPath;
+     }
+@@ -92,5 +92,5 @@
+     /// in the referenced layer stack.
+     ///
+-    const SdfPath &GetPrimPath() const {
++    const SdfPath &GetPrimPath() const SWIFT_RETURNS_INDEPENDENT_VALUE {
+         return _primPath;
+     }
+@@ -106,5 +106,5 @@
+     /// Returns the layer offset associated with the reference.
+     ///
+-    const SdfLayerOffset &GetLayerOffset() const {
++    const SdfLayerOffset &GetLayerOffset() const SWIFT_RETURNS_INDEPENDENT_VALUE {
+         return _layerOffset;
+     }
 diff -Nura --exclude .git --exclude *.orig --exclude .DS_Store --exclude *.pyc /Users/maddyadams/OpenUSD/pxr/usd/sdf/predicateProgram.h ./pxr/usd/sdf/predicateProgram.h
 --- /Users/maddyadams/OpenUSD/pxr/usd/sdf/predicateProgram.h	2026-01-07 16:15:59
 +++ ./pxr/usd/sdf/predicateProgram.h	2026-04-27 11:01:37
